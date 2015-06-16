@@ -5,3 +5,6 @@
 bin
 build
 dump.rdb
+.idea
+*.iml
+
