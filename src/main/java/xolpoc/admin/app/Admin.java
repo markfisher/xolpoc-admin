@@ -16,6 +16,10 @@
 
 package xolpoc.admin.app;
 
+import xolpoc.admin.web.AdminController;
+import xolpoc.admin.web.StreamController;
+import xolpoc.admin.web.TaskController;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -38,16 +42,13 @@ import org.springframework.xd.dirt.rest.TempAccessControlInterceptor;
 import org.springframework.xd.dirt.rest.metrics.AggregateCountersController;
 import org.springframework.xd.dirt.rest.metrics.FieldValueCountersController;
 
-import xolpoc.admin.web.AdminController;
-import xolpoc.admin.web.StreamController;
-
 /**
  * @author Mark Fisher
  */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @ImportResource("classpath*:/META-INF/spring-xd/analytics/redis-analytics.xml")
-@Import({AdminController.class, StreamController.class})
+@Import({AdminController.class, StreamController.class, TaskController.class})
 public class Admin {
 
 	public static void main(String[] args) throws Exception {
