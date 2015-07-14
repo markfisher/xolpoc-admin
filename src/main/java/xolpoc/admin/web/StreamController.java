@@ -35,7 +35,7 @@ import xolpoc.model.StreamDefinition;
 import xolpoc.spi.ModuleDeployer;
 import xolpoc.spi.StreamDefinitionRepository;
 import xolpoc.spi.defaults.InMemoryStreamDefinitionRepository;
-import xolpoc.spi.receptor.ReceptorModuleDeployer;
+import xolpoc.spi.local.LocalModuleDeployer;
 
 /**
  * @author Mark Fisher
@@ -46,7 +46,9 @@ public class StreamController {
 
 	private final StreamDefinitionRepository repository = new InMemoryStreamDefinitionRepository();
 
-	private final ModuleDeployer deployer = new ReceptorModuleDeployer();
+	// TODO: inject profile-driven deployer
+	//private final ModuleDeployer deployer = new ReceptorModuleDeployer();
+	private final ModuleDeployer deployer = new LocalModuleDeployer();
 
 	@RequestMapping
 	public Map<String, List<ModuleStatus>> listStreams() {
