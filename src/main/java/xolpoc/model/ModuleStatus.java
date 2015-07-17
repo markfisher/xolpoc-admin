@@ -27,6 +27,9 @@ import org.springframework.xd.module.ModuleDescriptor;
  * @author Mark Fisher
  */
 public class ModuleStatus {
+//TODO: make this generic and/or push down the receptor specifics into the ReceptorModuleDeployer's getModuelStatus method
+// we should define an enum (failed, incomplete, deploying, deployed) at the SPI level
+// all that impls do is map to those enum values from whatever their system provides
 
 	private final ModuleDescriptor descriptor;
 

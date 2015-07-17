@@ -33,7 +33,8 @@ public class LocalModuleDeployer implements ModuleDeployer {
 
 	@Override
 	public void deploy(ModuleDescriptor descriptor) {
-		launcher.launch(path(descriptor));
+		// TODO: pass args (from descriptor.getParameters()) in the 2nd arg to launch
+		launcher.launch(new String[] { path(descriptor) }, new String[0]);
 	}
 
 	@Override
