@@ -16,12 +16,7 @@
 
 package xolpoc.admin.app;
 
-import xolpoc.admin.web.AdminController;
-import xolpoc.admin.web.StreamController;
-import xolpoc.admin.web.TaskController;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,58 +26,23 @@ import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.xd.analytics.metrics.core.AggregateCounterRepository;
-import org.springframework.xd.analytics.metrics.core.FieldValueCounterRepository;
-import org.springframework.xd.dirt.rest.TempAccessControlInterceptor;
-import org.springframework.xd.dirt.rest.metrics.AggregateCountersController;
-import org.springframework.xd.dirt.rest.metrics.FieldValueCountersController;
+import org.springframework.util.ObjectUtils;
+
+import xolpoc.admin.web.StreamController;
+import xolpoc.admin.web.TaskController;
 
 /**
  * @author Mark Fisher
  */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-@ImportResource("classpath*:/META-INF/spring-xd/analytics/redis-analytics.xml")
-@Import({AdminController.class, StreamController.class, TaskController.class})
+@Import({StreamController.class, TaskController.class})
 public class Admin {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Admin.class, args);
-	}
-
-	@Autowired
-	FieldValueCounterRepository fieldValueCounterRepository;
-
-	@Autowired
-	AggregateCounterRepository aggregateCounterRepository;
-
-	@Bean
-	public FieldValueCountersController fieldValueCountersController() {
-		return new FieldValueCountersController(fieldValueCounterRepository);
-	}
-
-	@Bean
-	public AggregateCountersController aggregateCountersController() {
-		return new AggregateCountersController(aggregateCounterRepository);
-	}
-
-	@Bean
-	public WebMvcConfigurer configurer() {
-		return new WebMvcConfigurerAdapter() {
-
-			@Value("${xd.ui.allow_origin:http://localhost:9889}")
-			private String allowedOrigin;
-
-			@Override
-			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(new TempAccessControlInterceptor(allowedOrigin));
-			}
-		};
+		TomcatURLStreamHandlerFactory.disable();
+		SpringApplication.run(Admin.class, ObjectUtils.addObjectToArray(args, "--spring.config.name=admin"));
 	}
 
 	@Configuration
