@@ -7,4 +7,5 @@ build
 dump.rdb
 .idea
 *.iml
-
+*.ipr
+*.iws
